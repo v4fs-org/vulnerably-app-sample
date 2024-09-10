@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Transaction History</h2>
+    <ul>
+        {% for transaction in transactions %}
+            <li>
+                {% if transaction.sender_id == session['user_id'] %}
+                    Sent ${{ transaction.amount }} to {{ transaction.recipient.username }} on {{ transaction.timestamp }}
+                {% else %}
+                    Received ${{ transaction.amount }} from {{ transaction.sender.username }} on {{ transaction.timestamp }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

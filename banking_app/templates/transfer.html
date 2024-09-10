@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Transfer Funds</h2>
+    <form method="POST" action="{{ url_for('main.transfer') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.recipient.label }}<br>
+            {{ form.recipient(size=32) }}<br>
+            {% for error in form.recipient.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.amount.label }}<br>
+            {{ form.amount() }}<br>
+            {% for error in form.amount.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}
+
+ 
