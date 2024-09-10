@@ -25,6 +25,19 @@ def rce():
         output = os.popen(command).read()
     return render_template('rce.html', output=output)
 
+@main_bp.route('/rce_2', methods=['GET', 'POST'])
+def rce_2():
+    user_id = session.get('user_id')
+    if not user_id:
+        flash('Please log in to access this page', 'danger')
+        return redirect(url_for('main.login'))
+    output = ""
+    if request.method == 'POST':
+        command = request.form.get('command')
+        # Vulnerable to RCE
+        output = os.popen(command).read()
+    return render_template('rce.html', output=output)
+
 @main_bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
