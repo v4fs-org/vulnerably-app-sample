@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Remote Code Execution (RCE) Demonstration</h2>
+    <form method="POST" action="{{ url_for('main.rce') }}">
+        <label for="command">Enter Command:</label><br>
+        <input type="text" id="command" name="command" size="50"><br><br>
+        <input type="submit" value="Execute">
+    </form>
+    {% if output %}
+        <h3>Output:</h3>
+        <pre>{{ output }}</pre>
+    {% endif %}
+{% endblock %}
