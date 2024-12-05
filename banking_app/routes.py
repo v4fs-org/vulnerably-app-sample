@@ -5,6 +5,7 @@ from .models import db, User, Account, Transaction, Admin
 from datetime import datetime
 from . import create_app
 import os
+import subprocess
 
 main_bp = Blueprint('main', __name__)
 
@@ -21,8 +22,14 @@ def rce():
     output = ""
     if request.method == 'POST':
         command = request.form.get('command')
-        # Vulnerable to RCE
-        output = os.popen(command).read()
+        # Allowlist of commands
+        # TODO: Review and/or modify this list as needed
+        allowlist = ['ls', 'pwd', 'whoami']
+        command_args = command.split()
+        if command_args[0] not in allowlist:
+            flash('Invalid command', 'danger')
+        else:
+            output = subprocess.run(command_args, shell=False, capture_output=True, text=True).stdout
     return render_template('rce.html', output=output)
 
 @main_bp.route('/rce_2', methods=['GET', 'POST'])
@@ -34,8 +41,14 @@ def rce_2():
     output = ""
     if request.method == 'POST':
         command = request.form.get('command')
-        # Vulnerable to RCE
-        output = os.popen(command).read()
+        # Allowlist of commands
+        # TODO: Review and/or modify this list as needed
+        allowlist = ['ls', 'pwd', 'whoami']
+        command_args = command.split()
+        if command_args[0] not in allowlist:
+            flash('Invalid command', 'danger')
+        else:
+            output = subprocess.run(command_args, shell=False, capture_output=True, text=True).stdout
     return render_template('rce.html', output=output)
 
 @main_bp.route('/register', methods=['GET', 'POST'])
